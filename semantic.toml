@@ -1,0 +1,55 @@
+# semantic.toml - what this nest's data *means* (RFC-0016). Read by the MCP `schema`
+# tool, the admin UI, and the scaffolded skill. Edit descriptions freely; the
+# `[table.*.footguns]` are DERIVED from the ABI and regenerated - leave them be.
+
+schema_version = 1
+
+[nest]
+description = "The `grt-supply-nest` nest on arbitrum-one. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.graph_token__bridge_burned]
+description = "`BridgeBurned(address,uint256)` events emitted by the `graph_token` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per BridgeBurned(address,uint256) event"
+
+[table.graph_token__bridge_burned.columns]
+account = "The `account` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.graph_token__bridge_burned.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.graph_token__bridge_minted]
+description = "`BridgeMinted(address,uint256)` events emitted by the `graph_token` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per BridgeMinted(address,uint256) event"
+
+[table.graph_token__bridge_minted.columns]
+account = "The `account` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.graph_token__bridge_minted.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.graph_token__transfer]
+description = "`Transfer(address,address,uint256)` events emitted by the `graph_token` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Transfer(address,address,uint256) event"
+
+[table.graph_token__transfer.columns]
+from = "The `from` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+to = "The `to` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+value = "The `value` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.graph_token__transfer.footguns]
+reserved_words = [
+    "from",
+    "to",
+]
+big_ints = ["value"]
+overflows_dec = ["value"]
+
+[view]
+
+# Authored views (views/*.sql) are described here so the MCP/`/schema` can render them:
+# [view.your_view_name]
+# description = "What this derivation computes."
