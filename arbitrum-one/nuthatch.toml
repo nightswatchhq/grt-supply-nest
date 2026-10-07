@@ -5,8 +5,8 @@ chain_id = 42161
 rpc_urls = [
     "https://arb1.arbitrum.io/rpc",
 ]
-schema_version = 1
-block_timestamps = true
+schema_version = 2
+block_timestamps = false
 
 # L2GraphToken. Every burn and mint on Arbitrum is a `Transfer` to or from the zero address, and the
 # bridge's are among them: `bridgeBurn` on a withdrawal to L1 and `bridgeMint` on a deposit. The

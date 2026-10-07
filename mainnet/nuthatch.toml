@@ -1,0 +1,19 @@
+[nest]
+name = "grt-supply-mainnet"
+chain = "mainnet"
+chain_id = 1
+rpc_urls = [
+    "https://ethereum-rpc.publicnode.com",
+]
+schema_version = 2
+block_timestamps = false
+
+# GraphToken on Ethereum. Every `Transfer` to the zero address here is a real burn: the bridge to
+# Arbitrum locks GRT in the L1 escrow rather than burning it, so nothing needs taking out. Mints are
+# the 10B genesis and L1 issuance before rewards moved to Arbitrum.
+[[contracts]]
+alias = "graph_token"
+address = "0xc944e90c64b2c07662a292be6244bdf05cda44a7"
+start_block = 11446769
+abi = "abis/graph-token.json"
+events = ["Transfer"]

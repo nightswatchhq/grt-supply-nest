@@ -1,6 +1,7 @@
 # grt-supply-nest
 
-GRT minted and burned on Arbitrum One, with the bridge taken out.
+GRT burned and minted on Ethereum and Arbitrum One, with the bridge taken out. Two nests, one per
+chain, because a nest follows one chain: `mainnet/` and `arbitrum-one/`.
 
 The network subgraph counts every L2GraphToken `Transfer` to or from the zero address as a burn or a
 mint, and a withdrawal to L1 is one of those: `bridgeBurn` emits a `Transfer` to zero for GRT that is
@@ -11,25 +12,29 @@ bridge share exactly, and subtracts one from the other.
 
 ## Views
 
+Both nests have `grt_supply` and `grt_burns_by_source`. On mainnet `grt_supply` is just `burned` and
+`minted`: the Ethereum side of the bridge escrows GRT rather than burning it, so nothing comes out.
+On Arbitrum:
+
 - **`grt_supply`** - one row: `gross_burned` / `gross_minted` (what the subgraph reports), the bridge
   share of each, and `burned` / `issued` with the bridge removed. Wei, as strings.
 - **`grt_burns_by_source`** - real burns grouped by the burning address (HorizonStaking, L2Curation,
   GraphPayments and the rest).
 
-Lodestar reads `grt_supply` through kittiwake's `/supply` mount for `/api/grt-flow`.
+Lodestar reads both through kittiwake's `/supply` and `/supply-mainnet` mounts for `/api/grt-flow`.
 
 ## Scope
 
-Arbitrum only. Burns on Ethereum L1 (about 27M GRT, the bulk before the move to L2) need a mainnet
-nest; a nest is one chain.
-
-Kept apart from graph-allocations-nest because it is the whole GRT transfer stream, over ten million
-rows, and nuthatch filters `getLogs` on address and topic0 only.
+Kept apart from graph-allocations-nest because it is the whole GRT transfer stream on both chains,
+millions of rows, and nuthatch filters `getLogs` on address and topic0 only. `block_timestamps` is
+off: the totals need block numbers only, and fetching a header per block was 98% of the calls.
 
 ## Running
 
 ```sh
-nuthatch dev --dir . --window 81920
+nuthatch dev --dir arbitrum-one --window 25000 --rpc <arbitrum archive RPC>
+nuthatch dev --dir mainnet --window 25000 --rpc <mainnet archive RPC>
 ```
 
-`--window 81920` is what `nuthatch doctor --address 0x9623…88c7` recommends on arb1.arbitrum.io.
+`--window 25000` is GraphOps' `getLogs` range cap. Keyed URLs go on the command line, never in
+`nuthatch.toml`.
