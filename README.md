@@ -32,9 +32,9 @@ off: the totals need block numbers only, and fetching a header per block was 98%
 ## Running
 
 ```sh
-nuthatch dev --dir arbitrum-one --window 25000 --rpc <arbitrum archive RPC>
-nuthatch dev --dir mainnet --window 25000 --rpc <mainnet archive RPC>
+nuthatch dev --dir arbitrum-one --window 16000 --rpc <arbitrum archive RPC>
+nuthatch dev --dir mainnet --window 16000 --rpc <mainnet archive RPC>
 ```
 
-`--window 25000` is GraphOps' `getLogs` range cap. Keyed URLs go on the command line, never in
+`--window 16000` sits under GraphOps' `getLogs` range cap of 16,384 blocks. Keyed URLs go on the command line, never in
 `nuthatch.toml`.
